@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
-#    'shopfront.apps.ShopfrontConfig',
-#    'checkout.apps.CheckoutConfig',
+    'shopfront.apps.ShopfrontConfig',
+    'checkout.apps.CheckoutConfig',
 ]
 
 MIDDLEWARE = [
