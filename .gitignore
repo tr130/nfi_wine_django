@@ -5,3 +5,4 @@ local_settings.py
 src/
 settings.py.save
 db.sqlite3
+venv
