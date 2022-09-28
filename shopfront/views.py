@@ -2,7 +2,6 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from .models import Wine
 
-# Create your views here.
 def index(request):
     context = {
         'countries': [wine.country for wine in Wine.objects.distinct('country')],

@@ -1,12 +1,14 @@
 {% extends 'shopfront/base.html' %}
 
+{% load static %}
+
 {% block header %}
 <h1>{% block title %}{{wine.year}} {{ wine.name }}{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
 <div class="card prod-card">
-  <img class="card-img-top" src="/../static/wine-{{ wine.id }}.jpg" width="200px">
+	<img class="card-img-top" src="{% static 'img/'%}{{wine.image_filename}}" width="200px">
   <div>
     <div class="card-body">
       <h2>Tasting Notes</h2>
