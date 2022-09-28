@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Order Details{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<h3>{{ orderdetails.time|dt }}</h3>
+<ul>
+  {% for item in items %}
+  <li class="cart-item">
+    <div class="cart-item-division">
+      <a href="{{ url_for('shopfront.product', wineid=item.id) }}"> <img src="/../static/wine-{{ item.id }}.jpg"
+              width="50px">
+          <div class="class-item-info">
+              <h3>{{ item.year }} {{ item.name }}</h3>
+      </a>
+      <p>{{ item.quantity }} @ {{ item.unitprice | gbp }}
+      <br>Total Price: {{ item.totalprice|gbp }}
+      </p>
+
+      </div>
+  </div>
+      
+  </li>
+  {% endfor %}
+  </ul>
+  <h3>Grand Total (incl. postage): </h3>{{ orderdetails.totalprice|gbp }}
+  <hr>
+  <p>Our reference: {{ orderdetails.id }}</p>
+  <a href="{{ url_for('shopfront.orders') }}">Back to order list</a>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Order History{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+    {% for order in orders %}
+        <a class="order-item" href="{{url_for('shopfront.orderdetails', order=order.id)}}"><h3>{{ order.time|dt }}</h3>
+        <p>Total Price: {{ order.totalprice | gbp}}</p></a>
+
+    {% endfor %}
+
+    <a href="{{ url_for('auth.account') }}">Back to account</a>
+{% endblock %}

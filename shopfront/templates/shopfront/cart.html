@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Basket{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+{% if cart|length < 1 %}
+Your basket is empty.
+{% else %}
+<ul>
+    {% for item in cart %}
+    <li class="cart-item">
+        <div class="cart-item-division">
+            <a href="{{ url_for('shopfront.product', wineid=item) }}"> <img src="/../static/wine-{{ item }}.jpg"
+                    width="50px">
+                <div class="class-item-info">
+                    <h3>{{ cart[item]['year'] }} {{ cart[item]['name'] }}</h3>
+            </a>
+            <p>{{ cart[item]['unitprice'] | gbp }} each
+                <br>{{ cart[item]['stocklevel'] }} in stock
+                <br>{{ cart[item]['quantity'] }} in basket
+            </p>
+        </div>
+        </div>
+        </div>
+        <div class="cart-item-division">
+            <form action="{{ url_for('shopfront.UpdateCart') }}" method="POST">
+                <input type="hidden" name="item_id" value="{{ item }}">
+                <input type="number" name="quantity" id="" value="{{ cart[item]['quantity'] }}" min="1"
+                    max="{{ cart[item]['stocklevel'] }}">
+                <button class="cart-button" type="submit">Update</button>
+            </form>
+            <form action="{{ url_for('shopfront.RemoveCart') }}" method="POST">
+                <input type="hidden" name="item_id" value="{{ item }}">
+                <button class="cart-button fas fa-2x fa-times" type="submit"></button>
+            </form>
+        </div>
+    </li>
+    {% endfor %}
+    <li class="cart-item"><a class="clear-cart" href="{{ url_for('shopfront.ClearCart') }}">Clear Cart</a></li>
+</ul>
+<h3>Subtotal: {{ subtotal|gbp }}</h3>
+<p>Postage will be calculated at checkout</p>
+
+<a href="{{ url_for('checkout.summary') }}">Checkout Now</a>
+{% endif %}
+{% endblock %}

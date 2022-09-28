@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Winelist{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+{% if sort == 'desc' %}
+<a href="{{ url_for('shopfront.sort', direction='asc') }}"><button class="sort-button fas fa-2x fa-sort"></button></a>
+{% else %}
+<a href="{{ url_for('shopfront.sort', direction='desc') }}"><button class="sort-button fas fa-2x fa-sort"></button></a>
+{% endif %}
+<div id="list">
+  {% for item in items%}
+  <div class="card" id="{{ item.id }}">
+      <a href="{{ url_for('shopfront.product', wineid=item.id) }}"> <img class="card-img-top"
+          src="/../static/wine-{{ item.id }}.jpg" width="200px">
+        <div class="card-body">
+          <h2>{{ item.year}} {{ item.name }}</h2>
+          <p>{{ item.description|string|truncate(100) }}</p>
+      </a>
+      <div class="card-figures">
+        <p>{{ item.stocklevel }} in stock</p>
+        <p>{% if item.id|string in session['shopping_cart'] %}
+          {{ session['shopping_cart'][item.id|string]['quantity'] }}
+          {% else %}
+          0
+          {% endif %} in basket</p>
+      </div>
+    </div>
+    <div class="card-footer">
+      <p>Price: {{ item.price | gbp }}</p>
+      <form class="winelist-form" action="{{ url_for('shopfront.AddCart') }}" method="post">
+        <input type="hidden" name="item_id" value={{item.id}}>
+        <input type="number" name="quantity" id="" value="1" min="1" max="{{ item.stocklevel }}">
+        <button class="cart-button fas fa-2x fa-cart-plus" type="submit"></button>
+      </form>
+    </div>
+  <hr>
+</div>
+{% endfor %}
+</div>
+
+{% endblock %}

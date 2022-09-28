@@ -11,6 +11,7 @@ class Wine(models.Model):
     vat = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     price_incvat = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     stock_level = models.PositiveIntegerField()
+    description = models.TextField(default="This wine has no description.")
 
     def save(self):
         self.vat = self.price_exvat * 0.2
