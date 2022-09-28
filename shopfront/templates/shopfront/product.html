@@ -1,41 +1,35 @@
-{% extends 'base.html' %}
+{% extends 'shopfront/base.html' %}
 
 {% block header %}
-<h1>{% block title %}{{item.year}} {{ item.name }}{% endblock %}</h1>
+<h1>{% block title %}{{wine.year}} {{ wine.name }}{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
 <div class="card prod-card">
-  <img class="card-img-top" src="/../static/wine-{{ item.id }}.jpg" width="200px">
+  <img class="card-img-top" src="/../static/wine-{{ wine.id }}.jpg" width="200px">
   <div>
     <div class="card-body">
       <h2>Tasting Notes</h2>
-      <p>{{ item.description }}</p>
+      <p>{{ wine.description }}</p>
       <h2>Product Information</h2>
-      <p><strong>Country:</strong> {{ item.country }}</p>
-      <p><strong>Grape Variety:</strong> {{ item.variety }}</p>
+      <p><strong>Country:</strong> {{ wine.country }}</p>
+      <p><strong>Grape Variety:</strong> {{ wine.variety }}</p>
     </div>
     <div class="card-figures">
-      <p>{{ item.stocklevel }} in stock</p>
-      <p>{% if item.id|string in session['shopping_cart'] %}
-        {{ session['shopping_cart'][item.id|string]['quantity'] }}
-        {% else %}
-        0
-        {% endif %} in basket</p>
+      <p>{{ wine.stock_level }} in stock</p>
+      <p>  in basket</p>
     </div>
  
 
   <div class="card-footer">
-    <p>Price: {{ item.price | gbp }}</p>
-    <form class="winelist-form" action="{{ url_for('shopfront.AddCart') }}" method="post">
-      <input type="hidden" name="item_id" value={{item.id}}>
-      <input type="number" name="quantity" id="" value="1" min="1" max="{{ item.stocklevel }}">
+    <p>Price: {{ wine.price_incvat }}</p>
+    <form class="winelist-form" action="" method="post">
+      <input type="hidden" name="wine_id" value={{wine.id}}>
+      <input type="number" name="quantity" id="" value="1" min="1" max="{{ wine.stock_level }}">
       <button class="cart-button fas fa-2x fa-cart-plus" type="submit"></button>
     </form>
   </div>
 </div>
 </div>
-{% if session['last_search'] %}
-<a href="{{ url_for('shopfront.winelist', _anchor=item.id) }}">Back to search results</a>
-{% endif %}
+<a href="">Back to search results</a>
 {% endblock %}
