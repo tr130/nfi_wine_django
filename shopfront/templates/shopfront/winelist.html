@@ -1,6 +1,7 @@
 {% extends 'shopfront/base.html' %}
 
 {% load static %}
+{% load shopfront_extras %}
 
 {% block header %}
 <h1>{% block title %}Winelist{% endblock %}</h1>
@@ -15,20 +16,21 @@
 <div id="list">
   {% for item in wines%}
   <div class="card" id="{{ item.id }}">
-      <a href=""> <img class="card-img-top"
+	  <a href="{% url 'product-details' item.id %}"> <img class="card-img-top"
 		       src="{% static 'img/' %}{{ item.image_filename }}" width="200px">
         <div class="card-body">
-          <h2>{{ item }}</h2>
+          <h2>{{ item}}</h2>
           <p>{{ item.description }}</p>
       </a>
       <div class="card-figures">
         <p>{{ item.stock_level }} in stock</p>
-        <p> in basket</p>
+	<p>{{ item.id|in_basket:request.session.shopping_cart }} in basket</p>
       </div>
     </div>
     <div class="card-footer">
       <p>Price: {{ item.price_incvat }}</p>
-      <form class="winelist-form" action="" method="post">
+      <form class="winelist-form" action="{% url 'update-cart' %}" method="post">
+	{% csrf_token %}
         <input type="hidden" name="item_id" value={{item.id}}>
         <input type="number" name="quantity" id="" value="1" min="1" max="{{ item.stock_level }}">
         <button class="cart-button fas fa-2x fa-cart-plus" type="submit"></button>

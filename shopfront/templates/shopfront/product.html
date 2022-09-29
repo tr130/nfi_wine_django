@@ -1,6 +1,7 @@
 {% extends 'shopfront/base.html' %}
 
 {% load static %}
+{% load shopfront_extras %}
 
 {% block header %}
 <h1>{% block title %}{{wine.year}} {{ wine.name }}{% endblock %}</h1>
@@ -19,19 +20,22 @@
     </div>
     <div class="card-figures">
       <p>{{ wine.stock_level }} in stock</p>
-      <p>  in basket</p>
+      <p>{{ wine.id|in_basket:request.session.shopping_cart }} in basket</p>
     </div>
  
 
   <div class="card-footer">
     <p>Price: {{ wine.price_incvat }}</p>
-    <form class="winelist-form" action="" method="post">
-      <input type="hidden" name="wine_id" value={{wine.id}}>
+    <form class="winelist-form" action="{% url 'update-cart' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="item_id" value={{wine.id}}>
       <input type="number" name="quantity" id="" value="1" min="1" max="{{ wine.stock_level }}">
       <button class="cart-button fas fa-2x fa-cart-plus" type="submit"></button>
     </form>
   </div>
 </div>
 </div>
+{% if request.session.last_search %}
 <a href="">Back to search results</a>
+{% endif %}
 {% endblock %}
