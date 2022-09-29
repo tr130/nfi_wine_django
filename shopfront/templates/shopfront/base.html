@@ -20,8 +20,8 @@
     {% endif %}
     <a href="{% url 'index' %}"><h1>NFI Wine Merchants</h1></a>
   <div id="cart-container">
-  <a href=""><i class="fas fa-2x fa-shopping-cart"></i></a>
-    <p id="cart-count"></p>
+  <a href=""><i class="fas fa-2x fa-shopping-cart"></i>
+    <p id="cart-count">{{ request.session.shopping_cart|length }}</p></a>
   </div>
 </nav>
 <section class="content">

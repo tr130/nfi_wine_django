@@ -20,7 +20,7 @@
     </div>
     <div class="card-figures">
       <p>{{ wine.stock_level }} in stock</p>
-      <p>{{ wine.id|in_basket:request.session.shopping_cart }} in basket</p>
+      <p>{{ wine.id|in_basket:request.session }} in basket</p>
     </div>
  
 
@@ -29,7 +29,8 @@
     <form class="winelist-form" action="{% url 'update-cart' %}" method="post">
       {% csrf_token %}
       <input type="hidden" name="item_id" value={{wine.id}}>
-      <input type="number" name="quantity" id="" value="1" min="1" max="{{ wine.stock_level }}">
+      <input type="number" name="quantity" id="" value="{{ wine.id|in_basket:request.session}}" 
+        min="0" max="{{ wine.stock_level }}">
       <button class="cart-button fas fa-2x fa-cart-plus" type="submit"></button>
     </form>
   </div>

@@ -53,8 +53,6 @@ def update_cart(request):
     wine = get_object_or_404(Wine, id=item_id)
     if 'shopping_cart' not in request.session:
         request.session['shopping_cart'] = {}
-    if item_id in request.session['shopping_cart']:
-        quantity += request.session['shopping_cart'][item_id]
     if quantity > wine.stock_level:
         error = 'Insufficient stock.'
     if error is not None:
@@ -63,9 +61,7 @@ def update_cart(request):
         request.session['shopping_cart'].update({item_id: quantity}) 
         request.session.modified = True
     try:
-        print(request.headers['REFERER'])
         return HttpResponseRedirect(request.headers['REFERER'])
     except:
-        print('something wrong')
         return redirect('index')
 
