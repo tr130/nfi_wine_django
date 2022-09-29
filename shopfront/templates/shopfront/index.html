@@ -12,6 +12,7 @@
 partnerships with an exclusive network of vineyards across the continent, and pride ourselves on the consistent
 quality of our wines and our high standards of customer service.</p>
 <form action="" method="post">
+  {% csrf_token %}
   <h3>Find your perfect wine</h3>
 
     <select class="search-select" name="country" id="country">
