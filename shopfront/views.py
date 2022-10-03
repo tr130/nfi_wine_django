@@ -2,6 +2,10 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Wine
+from .serializers import WineSerializer
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 def index(request):
     countries = [wine.country for wine in Wine.objects.distinct('country')]
@@ -14,6 +18,12 @@ def index(request):
         'colors': colors,
         }
     return render(request, 'shopfront/index.html', context)
+
+class WineList(APIView):
+    def get(self, request, format=None):
+        wines = Wine.objects.all()
+        serializer = WineSerializer(wines, many=True)
+        return Response(serializer.data)
 
 def product_details(request, pk):
     context = {
