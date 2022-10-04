@@ -19,12 +19,22 @@ def index(request):
         }
     return render(request, 'shopfront/index.html', context)
 
+class GetParams(APIView):
+    def get(self, request, format=None):
+        countries = [wine.country for wine in Wine.objects.distinct('country')]
+        colors = [wine.color for wine in Wine.objects.distinct('color')]
+        return Response({
+            'countries': countries,
+            'colors': colors,
+            })
+    
+
 class WineList(APIView):
     def get(self, request, format=None):
         wines = Wine.objects.all()
         serializer = WineSerializer(wines, many=True)
         return Response(serializer.data)
-
+        
 def product_details(request, pk):
     context = {
         'wine': get_object_or_404(Wine, id=pk),
