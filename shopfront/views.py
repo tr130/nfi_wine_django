@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Wine
 from .serializers import WineSerializer
+from urllib.parse import parse_qs
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -29,10 +30,22 @@ class GetParams(APIView):
             })
 
 class WineList(APIView):
-    def get(self, request, format=None):
-        wines = Wine.objects.all()
+    def post(self, request, format=None):
+        query = request.data.get('query', '')
+        if query:
+            search = parse_qs(query)
+            countries = [wine.country for wine in Wine.objects.distinct('country')]
+            colors = [wine.color for wine in Wine.objects.distinct('color')]
+            wines = Wine.objects.filter(price_incvat__range=(search['price'][0].split()[0], search['price'][0].split()[1]))
+            if search['country'][0] in countries:
+                wines = wines.filter(country=search['country'][0])
+            if search['color'][0] in colors:
+                wines = wines.filter(color=search['color'][0])
+        else:
+            wines = Wine.objects.all()
         serializer = WineSerializer(wines, many=True)
         return Response(serializer.data)
+       
 
 class WineDetails(APIView):
     def get(self, request, wine_slug, format=None):
