@@ -27,13 +27,28 @@ class GetParams(APIView):
             'countries': countries,
             'colors': colors,
             })
-    
 
 class WineList(APIView):
     def get(self, request, format=None):
         wines = Wine.objects.all()
         serializer = WineSerializer(wines, many=True)
         return Response(serializer.data)
+
+class WineDetails(APIView):
+    def get(self, request, wine_slug, format=None):
+        wine = get_object_or_404(Wine, id=wine_slug)
+        serializer = WineSerializer(wine)
+        return Response(serializer.data)
+    # def get_object(self, category_slug):
+    #     try:
+    #         return Category.objects.get(slug=category_slug)
+    #     except Category.DoesNotExist:
+    #         raise Http404
+
+    # def get(self, request, category_slug, format=None):
+    #     category = self.get_object(category_slug)
+    #     serializer = CategorySerializer(category)
+    #     return Response(serializer.data)
         
 def product_details(request, pk):
     context = {
