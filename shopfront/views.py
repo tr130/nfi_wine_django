@@ -45,7 +45,15 @@ class WineList(APIView):
             wines = Wine.objects.all()
         serializer = WineSerializer(wines, many=True)
         return Response(serializer.data)
-       
+
+class CartDetails(APIView):
+    def post(self, request, format=None):
+        cart = request.data.get('cart', [])
+        wines = Wine.objects.filter(id__in=cart)
+        serializer = WineSerializer(wines, many=True)
+        print(wines)
+        print(serializer)
+        return Response(serializer.data)
 
 class WineDetails(APIView):
     def get(self, request, wine_slug, format=None):
