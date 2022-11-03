@@ -7,6 +7,7 @@ from urllib.parse import parse_qs
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 def index(request):
     countries = [wine.country for wine in Wine.objects.distinct('country')]
@@ -19,6 +20,19 @@ def index(request):
         'colors': colors,
         }
     return render(request, 'shopfront/index.html', context)
+
+class AuthTestView(APIView):
+    http_method_names = 'get'
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        # user = request.user
+        print(dir(request.user))
+        response_data = {
+            'result': 'Restricted access test ok',
+            'user': str(request.user),
+        }
+        return Response(data=response_data)
+
 
 class GetParams(APIView):
     def get(self, request, format=None):
@@ -70,7 +84,7 @@ class WineDetails(APIView):
     #     category = self.get_object(category_slug)
     #     serializer = CategorySerializer(category)
     #     return Response(serializer.data)
-        
+
 def product_details(request, pk):
     context = {
         'wine': get_object_or_404(Wine, id=pk),
@@ -114,7 +128,7 @@ def update_cart(request):
     if error is not None:
         messages.warning(request, error)
     else:
-        request.session['shopping_cart'].update({item_id: quantity}) 
+        request.session['shopping_cart'].update({item_id: quantity})
         request.session.modified = True
     try:
         return HttpResponseRedirect(request.headers['REFERER'])

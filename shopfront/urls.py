@@ -9,5 +9,6 @@ urlpatterns = [
     path('update_cart', views.update_cart, name='update-cart'),
     path('api/winelist', views.WineList.as_view()),
     path('api/cart_details', views.CartDetails.as_view()),
-    path('api/getParams', views.GetParams.as_view())
+    path('api/getParams', views.GetParams.as_view()),
+    path('api/authTest', views.AuthTestView.as_view()),
 ]
